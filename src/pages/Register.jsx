@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { use } from 'react';
 import { Link } from 'react-router';
+import { AuthContext } from '../provider/AuthProvider';
 
 const Register = () => {
 
+     const {authRegister,setUsers}=use(AuthContext);
+
      const handleSubmit =(e)=>{
           e.preventDefault();
-          const name =e.target.name.valur;
-          const photo =e.target.photo.valur;
-          const email =e.target.email.valur;
-          const password =e.target.password.valur;
+          const name =e.target.name.value;
+          const photo =e.target.photo.value;
+          const email =e.target.email.value;
+          const password =e.target.password.value;
           console.log(name,photo,email,password);
+
+          authRegister(email,password).then(result=>{
+               console.log(result);
+               setUsers(result.user);
+          }).catch(error=>{
+               console.log(error);
+          })
 
      }
      return (
@@ -27,8 +37,8 @@ const Register = () => {
           <label className="label">Email</label>
           <input type="email" className="input" name='email' placeholder="Email" />
           <label className="label">Password</label>
-          <input type="password" className="input" name='password' placeholder="Password" />
-          <button type='submit' className="btn btn-neutral mt-4">Register</button>
+          <input type="password" className="input" name='password' required placeholder="Password" />
+          <Link to='/' type='submit' className="btn btn-neutral mt-4">Register</Link>
           <p className='font-semibold text-center mt-4'>Already Have An Account? <Link className='text-secondary' to='/auth/login'>Login</Link></p>
         </form>
       </div>

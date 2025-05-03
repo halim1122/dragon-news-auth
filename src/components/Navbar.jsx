@@ -1,8 +1,9 @@
 import React, { use } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import user from "../assets/user.png";
 import { AuthContext } from "../provider/AuthProvider";
 const Navbar = () => {
+  const Navigate = useNavigate();
 
   const {users,logout} = use(AuthContext);
 
@@ -12,6 +13,7 @@ const Navbar = () => {
     }).catch((error) => {
       console.log(error);
     });
+    Navigate('/auth/login')
   }
   return (
     <div className="flex justify-between items-center">

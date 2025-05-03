@@ -1,33 +1,38 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../firebase/Firebase.utiliti';
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
 
-     const [users,setUsers]=useState(null);
+     const [users, setUsers] = useState(null);
 
-     const authRegister =(email,password)=> {
-         return createUserWithEmailAndPassword(auth,email,password);
+     const authRegister = (email, password) => {
+          return createUserWithEmailAndPassword(auth, email, password);
      }
 
-     const logout =()=>{
-         return signOut(auth);
+     const handlesignIn = (email, password) => {
+          return signInWithEmailAndPassword(auth, email, password);
      }
 
-     useEffect(()=>{
-          const unsubscribe = onAuthStateChanged(auth,(currentUser)=>{
+     const logout = () => {
+          return signOut(auth);
+     }
+
+     useEffect(() => {
+          const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
                setUsers(currentUser);
           });
-          return ()=>{
+          return () => {
                unsubscribe();
           }
-     },[])
-     const userInfo ={
+     }, [])
+     const userInfo = {
           users,
           setUsers,
           authRegister,
+          handlesignIn,
           logout
      };
 
